@@ -55,7 +55,7 @@
                                         <td><a href="{{ route('admin.edithomeslider', ['id' => $slide->id]) }}"><i
                                                     class="fa fa-edit fa-2x"></i></a>&nbsp;&nbsp;&nbsp;
                                             <a href="" wire:click.prevent="deleteslide({{ $slide->id }})"><i
-                                                    class="fa fa-trash fa-2x text-danger"></a>
+                                                    class="fa fa-trash fa-2x text-danger"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

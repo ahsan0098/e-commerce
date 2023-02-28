@@ -5,6 +5,7 @@ use App\Http\Livewire\CartComponent;
 use App\Http\Livewire\HomeComponent;
 use App\Http\Livewire\ShopComponent;
 use App\Actions\Jetstream\DeleteUser;
+use App\Http\Controllers\StripeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\DetailsComponent;
 use App\Http\Livewire\SearchComponenet;
@@ -23,6 +24,9 @@ use App\Http\Livewire\Admin\DeleteCategoryComponent;
 use App\Http\Livewire\Admin\AdminHomeSliderComponent;
 use App\Http\Livewire\Admin\AdminAddHomeSliderComponent;
 use App\Http\Livewire\Admin\AdminEditHomeSliderComponent;
+use App\Http\Livewire\InvoiceComponent;
+use App\Http\Livewire\StripeComponent;
+use App\Http\Livewire\Thankyou;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,15 +43,18 @@ use App\Http\Livewire\Admin\AdminEditHomeSliderComponent;
 //     return view('welcome');
 // });
 
-Route::get('/', HomeComponent::class);
-
+Route::get('/', HomeComponent::class)->name('/');
+route::any('/thank', Thankyou::class);
 Route::get('/shop', ShopComponent::class);
-Route::get('/cart', CartComponent::class);
-Route::get('/checkout', CheckoutComponent::class);
+Route::get('/cart', CartComponent::class)->name('product.cart');
+Route::get('/checkout', CheckoutComponent::class)->name('check-out');
 Route::get('/product/{slug}', DetailsComponent::class)->name('product.details');
 Route::get('/category/{slug}', ProductbycategoryComponent::class)->name('category.details');
 Route::get('/search', SearchComponenet::class)->name('product.search');
-
+Route::get('/stripe', StripeComponent::class)->name('stripe');
+Route::get('/invoice', InvoiceComponent::class)->name('invoice');
+// route::get('/check', [StripeController::class, 'index']);
+// Route::get('success', [StripeController::class, 'index'])->name('stripe-success');
 
 // Route::middleware([
 //     'auth:sanctum',

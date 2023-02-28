@@ -7,6 +7,12 @@ use Livewire\Component;
 
 class AdminHomeSliderComponent extends Component
 {
+    public function deleteslide($slideid)
+    {
+        $slide = homeSlider::find($slideid);
+        $slide->delete();
+        // back();
+    }
     public function render()
     {
         $slides = homeSlider::paginate(5);

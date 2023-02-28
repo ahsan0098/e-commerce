@@ -2,19 +2,26 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\category;
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\category;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Livewire\WithPagination;
 
 class ShopComponent extends Component
 {
+    public function store($p_id, $p_name = "abc", $p_price = "123")
+    {
+        Cart::add($p_id, $p_name, 1, $p_price)->associate('App\models\Product');
+        session()->flash('success_message', 'item added in cart');
+        return redirect()->route('product.cart');
+    }
+
     public $sorting = 'default';
     public $size = 12;
     use WithPagination;
     public function render()
     {
-
         if ($this->sorting == "new") {
             $products = Product::orderBy('created_at', 'DESC')->paginate($this->size);
         } else if ($this->sorting == "price_h2l") {

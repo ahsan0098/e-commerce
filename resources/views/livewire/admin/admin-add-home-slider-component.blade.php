@@ -18,7 +18,7 @@
                                 ADD slide
                             </div>
                             <div class="col-md-6">
-                                <a href="{{ route('admin.categories') }}" class="btn btn-success pull-right">All
+                                <a href="{{ route('admin.homeslider') }}" class="btn btn-success pull-right">All
                                     Slides</a>
                             </div>
                         </div>
@@ -29,7 +29,8 @@
                     @endif
                     <div class="panel-body">
 
-                        <form action="" class="form-horizontal" wire:submit.prevent="addslide">
+                        <form wire:submit.prevent="addslide" method="POST" class="form-horizontal"
+                            enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="name" class="col-md-4 control-label">slide Titile</label>
                                 <div class="col-md-4">
@@ -71,8 +72,7 @@
                             <div class="form-group">
                                 <label for="name" class="col-md-4 control-label">slide image</label>
                                 <div class="col-md-4">
-                                    <input type="file" name="image" id="image" class="form-control input-md"
-                                        wire:modal="image">
+                                    <input type="file" wire:modal="image" class="form-control input-md" />
                                 </div>
                             </div>
                             <div class="form-group">

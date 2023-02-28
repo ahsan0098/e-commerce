@@ -16,6 +16,10 @@ class AdminAddHomeSliderComponent extends Component
     public $image;
     public function addslide()
     {
+        session()->flash(
+            'message',
+            'product updated successfully!'
+        );
         $slide = new homeSlider();
         $slide->title = $this->title;
         $slide->subtitle = $this->subtitle;
@@ -23,11 +27,11 @@ class AdminAddHomeSliderComponent extends Component
         $slide->link = $this->link;
         $slide->status = $this->status;
         // $slide->image = $this->image;
-        $imagename = Carbon::now()->timestamp . '.' . $this->image->extension();
+        // $imagename = Carbon::now()->timestamp . '.' . $this->image->extension();
         // WithFileUploads::saveDomDocument('products', $imagename);
-        $this->image->storeAs('slides', $imagename);
-        $slide->save();
-        session()->flash('message', 'product updated successfully!');
+        // $this->image->storeAs('slides', $imagename);
+        // $slide->save();
+        // session()->flash('message', $this->image);
     }
     public function render()
     {

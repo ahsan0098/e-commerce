@@ -21,6 +21,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/flexslider.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/color-01.css') }}">
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> --}}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://js.stripe.com/v3/"></script>
     @livewireStyles
 </head>
 
@@ -177,8 +181,13 @@
                                     <a href="#" class="link-direction">
                                         <i class="fa fa-shopping-basket" aria-hidden="true"></i>
                                         <div class="left-info">
-                                            <span class="index">4 items</span>
-                                            <span class="title">CART</span>
+                                            @if (Cart::count() >= 0)
+                                                <span class="index">{{ Cart::count() }} items</span>
+                                                <span class="title">CART</span>
+                                            @else
+                                                <span class="index">{{ Cart::count() }} items</span>
+                                                <span class="title">CART</span>
+                                            @endif
                                         </div>
                                     </a>
                                 </div>
@@ -556,7 +565,6 @@
                 </div>
             </div>
         </footer>
-
         <script src="{{ asset('assets/js/jquery-1.12.4.minb8ff.js?ver=1.12.4') }}"></script>
         <script src="{{ asset('assets/js/jquery-ui-1.12.4.minb8ff.js?ver=1.12.4') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
@@ -566,7 +574,85 @@
         <script src="{{ asset('assets/js/jquery.countdown.min.js') }}"></script>
         <script src="{{ asset('assets/js/jquery.sticky.js') }}"></script>
         <script src="{{ asset('assets/js/functions.js') }}"></script>
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         @livewireScripts
+        <script>
+            window.jsPDF = window.jspdf.jsPDF;
+            window.addEventListener('swal:message', function(e) {
+                swal.fire(e.detail);
+            });
+            window.addEventListener('swal:success', function(e) {
+                swal.fire(e.detail).then(function(e) {
+                    // jQuery("#ord-btn").prop("disabled", false);
+                    window.location.href = "/thank";
+                });
+            });
+            window.addEventListener('swal:confirmpay', function(e) {
+                swal.fire(e.detail).then((result) => {
+                    if (result.isConfirmed) {
+                        window.livewire.emit('stripePay');
+                    }
+                });
+            });
+            // $(document).on('click', '#odr-btn', function(e) {
+            //     // alert('dsfdsfsfs')
+            //     $(this).prop('disabled', true);
+            // })
+            // $(document).on('click','#invoice',function(f){
+            //     alert('dfdf');
+            //     html2canvas(document.body).then(function(canvas) {
+            //     document.body.appendChild(canvas);
+
+            // });
+            // html2canvas(document.getElementById('canvas')).then(function(canvas) {
+            // document.getElementById("image").src= canvas.toDataURL();
+            // });
+            // });
+
+
+        </script>
+        <script>
+
+    const options = {
+      margin: 0.5,
+      filename: 'invoice-component.pdf',    //name the output file
+      image: {
+        type: 'jpeg',     //image type
+        quality: 100
+      },
+      html2canvas: {
+        scale: 1
+      },
+      jsPDF: {
+        unit: 'in',
+        format: 'letter',
+        orientation: 'portrait'   // pdf orientation
+      }
+    }
+
+    $('#canvas').click(function(e){     // class for download button
+      e.preventDefault();
+      html2canvas(document.querySelector("#invoice"),{
+        allowTaint:true,
+        useCORS:true,
+        scale:1
+      }).then(canvas => {
+    document.body.appendChild(canvas)
+    var img=canvas.toDataURL("image/phg");
+    var doc = new jsPDF();
+    doc.addImage(img, 'png', 10, 50);
+    doc.save('test');
+});
+    //   const element = document.getElementById('invoice');   //id for content area
+    //   html2pdf().from(element).set(options).save();
+    alert('good');
+    });
+
+
+
+    </script>
     </body>
 
     </html>
